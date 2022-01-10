@@ -1,0 +1,46 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../prisma/client"
+  previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id          String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  filePath    String
+  settings    Json
+  latestFrame Json
+  stats       Json
+  gameEnd     Json
+  players     Player[]
+}
+
+model Character {
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  number    Int      @unique @db.Int
+  name      String   @unique
+  shortName String   @unique
+  colors    String[]
+
+  @@unique([number, name, shortName])
+}
+
+model Player {
+  id             String  @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  playerIndex    Int?
+  port           Int?
+  characterColor Int?
+  startStocks    Int?
+  type           Int?
+  teamId         Int?
+  controllerFix  String?
+  nametag        String?
+  displayName    String?
+  connectCode    String  @unique @db.String
+  Game           Game?   @relation(references: [id], fields: [gameId])
+  gameId         String? @db.ObjectId
+}
