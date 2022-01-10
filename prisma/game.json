@@ -1,6 +1,6 @@
 {
-  "gameId": "tes.2021-04-08T05:48:39Z",
-  "filePath": "tes",
+  "gameId": "WEEM#235.GLWE#210.2021-04-08T05:48:39Z",
+  "playerCodes": ["WEEM#235", "GLWE#210"],
   "settings": {
     "slpVersion": "3.9.0",
     "isTeams": false,
@@ -146,6 +146,35 @@
     ],
     "frame": 6624,
     "isTransferComplete": true
+  },
+  "gameEnd": {
+    "gameEndMethod": 7,
+    "lrasInitiatorIndex": 1
+  },
+  "metadata": {
+    "startAt": "2021-04-08T05:48:39Z",
+    "lastFrame": 6624,
+    "players": {
+      "0": {
+        "names": {
+          "netplay": "$hweems",
+          "code": "WEEM#235"
+        },
+        "characters": {
+          "18": 6809
+        }
+      },
+      "1": {
+        "names": {
+          "netplay": "glweems",
+          "code": "GLWE#210"
+        },
+        "characters": {
+          "22": 6809
+        }
+      }
+    },
+    "playedOn": "dolphin"
   },
   "stats": {
     "lastFrame": 6624,
@@ -2004,34 +2033,5 @@
       }
     ],
     "gameComplete": true
-  },
-  "gameEnd": {
-    "gameEndMethod": 7,
-    "lrasInitiatorIndex": 1
-  },
-  "metadata": {
-    "startAt": "2021-04-08T05:48:39Z",
-    "lastFrame": 6624,
-    "players": {
-      "0": {
-        "names": {
-          "netplay": "$hweems",
-          "code": "WEEM#235"
-        },
-        "characters": {
-          "18": 6809
-        }
-      },
-      "1": {
-        "names": {
-          "netplay": "glweems",
-          "code": "GLWE#210"
-        },
-        "characters": {
-          "22": 6809
-        }
-      }
-    },
-    "playedOn": "dolphin"
   }
 }

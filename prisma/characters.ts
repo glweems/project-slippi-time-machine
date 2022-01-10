@@ -1,8 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { characters, SlippiGame } from '@slippi/slippi-js';
-
+import { characters } from '@slippi/slippi-js';
 import fs from 'fs';
-import { generateGameData } from '../src/game';
 
 const prisma = new PrismaClient();
 (async function main() {
@@ -15,4 +13,4 @@ const prisma = new PrismaClient();
   // const game = new SlippiGame('slp/Game_20210408T004839.slp');
   // const data = generateGameData('Game_20210408T004839', game);
   await fs.writeFileSync('prisma/characters.json', JSON.stringify(data, null, 2));
-})();
+})().catch(console.error);

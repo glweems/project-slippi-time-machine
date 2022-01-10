@@ -1,21 +1,22 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Default",
   "compilerOptions": {
-    "composite": false,
     "declaration": true,
-    "declarationMap": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "inlineSources": false,
-    "isolatedModules": true,
+    "declarationDir": "./dist",
+    "module": "esnext",
+    "noImplicitAny": false,
     "moduleResolution": "node",
+    "outDir": "./dist",
+    "target": "es2018",
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "strict": false,
+    "strictNullChecks": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "preserveWatchOutput": true,
-    "skipLibCheck": true,
-    "strict": true
+    "noImplicitReturns": false,
+    "noFallthroughCasesInSwitch": false,
+    "lib": ["esnext"]
   },
-  "exclude": ["node_modules"],
-  "include": ["src", "test"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

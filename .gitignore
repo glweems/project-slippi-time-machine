@@ -1,2 +1,6 @@
 slp
 node_modules
+dist
+**/*.slp
+Slippi
+lib

@@ -1,47 +1,20 @@
-import { characters, SlippiGame } from '@slippi/slippi-js';
-// import { getCharacterInfo } from '@slippi/slippi-js/dist/melee/characters';
-import { generateGameData } from './game';
+import cliProgress from 'cli-progress';
 
-const metadata = {
-  startAt: '2021-04-08T05:48:39Z',
-  lastFrame: 6624,
-  players: {
-    '0': {
-      names: {
-        netplay: '$hweems',
-        code: 'WEEM#235',
-      },
-      characters: {
-        '18': 6809,
-      },
-    },
-    '1': {
-      names: {
-        netplay: 'glweems',
-        code: 'GLWE#210',
-      },
-      characters: {
-        '22': 6809,
-      },
-    },
-  },
-  playedOn: 'dolphin',
-};
-
-const players = Object.entries(metadata.players).map(([index, player]) => {
-  const [playerChars] = Object.keys(player.characters).map(charCode => characters.getCharacterInfo(Number(charCode)));
-
-  const { netplay, code } = player.names;
-  return {
-    index: Number(index),
-    netplay,
-    code,
-    playerChars,
-  };
+const bar = new cliProgress.SingleBar({}, cliProgress.Presets.rect);
+bar.start(10, 1);
+let val = 0;
+bar.update(val);
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(i => {
+  setTimeout(() => {
+    val += 1;
+  }, 1000);
 });
+// []
+// bar.emit();
+// console.log(2);
 
-const game = new SlippiGame('slp/Game_20210408T004839.slp');
-const data = generateGameData('slp/Game_20210408T004839.slp', game);
-console.log(data);
-
-console.log(players);
+// const main = async () => {
+//   [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach(i => {});
+//   bar.stop();
+// };
+// main();
