@@ -1,4 +1,5 @@
 node_modules
-dis
+dist
 Slippi
 lib
+slippi.json
