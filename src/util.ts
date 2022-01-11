@@ -1,12 +1,8 @@
 import type { FrameEntryType } from '@slippi/slippi-js';
-import { characters } from '@slippi/slippi-js';
 import { config } from 'dotenv';
 import fs from 'fs';
-import _ from 'lodash';
 import moment from 'moment';
-
-import type { MetadataPlayersType } from './types';
-
+import path from 'path';
 export function convertFrameCountToDurationString(frameCount: number): string {
   // Enforce positive numbers only
   const totalFrames = Math.max(frameCount, 0);
@@ -23,7 +19,7 @@ export function reorder(list: any[], startIndex: number, endIndex: number) {
 }
 
 export const findWinnerIndex = (
-  lastFrame: FrameEntryType | null
+  lastFrame: FrameEntryType | null | any
 ): number | null => {
   if (lastFrame === null) {
     return null;
@@ -57,21 +53,6 @@ export const findWinnerIndex = (
   return winnerPostFrame.playerIndex;
 };
 
-export const extractPlayers = (players: MetadataPlayersType) => {
-  if (!players) throw new Error('No players found');
-  const fPlayers = Object.keys(players).map((key) => {
-    const { names, characters: chars } = _.get(players, key);
-    const p: any = {};
-    Object.entries(chars).forEach(([charKey, colorId]) => {
-      // TODO const colorId = chars[charKey];
-      const charId = Number(charKey);
-      p.character = characters.getCharacterInfo(charId);
-    });
-    return { playerIndex: Number(key) };
-  });
-  return fPlayers;
-};
-
 export const getEnv = (path = '.env') => {
   config({ path });
   return {
@@ -83,6 +64,11 @@ export const getEnv = (path = '.env') => {
     connectCode: process.env.CONNECT_CODE,
     slpFolder: process.env.SLP_FOLDER,
   };
+};
+
+export const getSearchPattern = (searchDir: string, recursive: boolean) => {
+  const searchPattern = recursive ? '**/*.slp' : '/*.slp';
+  return path.join(searchDir, searchPattern);
 };
 
 export const readPackageJson = (

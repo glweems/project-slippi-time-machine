@@ -1,6 +1,4 @@
-slp
 node_modules
-dist
-**/*.slp
+dis
 Slippi
 lib

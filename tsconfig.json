@@ -17,6 +17,6 @@
     "noFallthroughCasesInSwitch": false,
     "lib": ["esnext"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "test/extractPlayers.spec.ts"],
+  "exclude": ["node_modules", "rollup.config.js", "src/index.ts"]
 }

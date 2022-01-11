@@ -40,10 +40,6 @@ export interface GameData {
   gameEnd: GameEndType | null;
   winner: number | null;
 }
-export type MetadataPlayersType = Record<
-  string,
-  MetadataType['players']
->[number];
 
 export interface StatCalculationResult {
   result: unknown;

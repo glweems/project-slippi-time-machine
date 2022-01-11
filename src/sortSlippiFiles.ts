@@ -1,10 +1,14 @@
+/* eslint-disable no-plusplus */
 import * as slippi from '@slippi/slippi-js';
 import fs from 'fs-extra';
 import glob from 'glob';
-import _ from 'lodash';
+import mkDir from 'make-dir';
+import moment from 'moment';
 import path from 'path';
+import ProgressBar from 'progress';
 
-import { extractPlayers, findWinnerIndex } from './util';
+import { extractPlayers } from './extractPlayers';
+import { findWinnerIndex, getSearchPattern } from './util';
 
 export type SortOption =
   | 'year'
@@ -25,30 +29,33 @@ export type SortSlippiDirOpts = {
   connectCode?: ConnectCodeType;
 };
 
-const genSortDate = (fileName: string) => {
-  console.log(fileName);
+
+const genSortData = (fileName: string) => {
   const isValid = true;
   const buffer = fs.readFileSync(fileName);
   const game = new slippi.SlippiGame(buffer);
   const settings = game.getSettings();
   const metadata = game.getMetadata();
-  if (!settings || !metadata?.startAt || !metadata?.players) return;
+  if (!settings || !metadata?.startAt || !metadata?.players) {
+    throw new Error('No settings or metadata found');
+  }
+
   const date = new Date(metadata?.startAt);
 
-  const winnerIdx = findWinnerIndex(game.getLatestFrame());
-  const players = extractPlayers(metadata.players);
-  const winner = players.find((player) => player.playerIndex === winnerIdx);
+  const winnerIndex = findWinnerIndex(game.getLatestFrame());
+  const players = extractPlayers(metadata?.players as any);
+  const winner = players.find((player) => player.playerIndex === winnerIndex);
+  return {
+    fullPath: fileName,
+    name: path.basename(fileName),
+    date,
+    winner,
+    winnerIndex,
+    players,
+  };
 };
 
-genSortDate(
-  'Slippi/slp.1/2021/02/2021-02-20-2:07(am)_[Falco]_vs_[Falcon]-0-BAT.slp'
-);
-
-function getSearchPattern(searchDir: string, recursive: boolean) {
-  const searchPattern = recursive ? '**/*.slp' : '/*.slp';
-  return path.join(searchDir, searchPattern);
-}
-export const sortSlippiDir = (opts: SortSlippiDirOpts) => {
+export const sortSlippiDir = async (opts: SortSlippiDirOpts) => {
   const {
     slippiDir,
     sortBy,
@@ -65,7 +72,27 @@ export const sortSlippiDir = (opts: SortSlippiDirOpts) => {
   const files = glob.sync(pattern);
 
   const fileCount = files.length;
+  const bar = new ProgressBar(':bar| :percent :index/:total :time', {
+    total: fileCount,
+    width: 10,
+  });
+  // bar.start(fileCount, 0);
+  files.forEach(async (file, index) => {
+    const startTime = Date.now();
+    const data = genSortData(file);
+    const endTime = Date.now();
+    const timeTaken = endTime - startTime;
+    const s = moment(timeTaken).format('h:mm:ss a');
+    console.log(JSON.stringify(data, null, 2));
+    bar.tick({
+      index,
+      total: fileCount,
+      percent: index / fileCount,
+      time: timeTaken,
+    });
+  });
 
+  // bar.stop();
   // console.table(files);
   /* const files = fs.readdirSync(slippiDir);
   const filePaths = files.map((file) => path.join(slippiDir, file));
@@ -96,8 +123,8 @@ export const sortSlippiDir = (opts: SortSlippiDirOpts) => {
       const aStage = aSettings.stageId;
       const bStage = bSettings */
 };
-sortSlippiDir({ slippiDir: 'Slippi/slp', recursive: true });
-sortSlippiDir({ slippiDir: 'Slippi/slp' });
+sortSlippiDir({ slippiDir: 'Slippi/slp', sortBy: 'year', recursive: true });
+// sortSlippiDir({ slippiDir: 'Slippi/slp' });
 
 // export const sortSlippiDir = (opts: SortSlippiDirOpts) => {
 //   let searchDir = dir;
